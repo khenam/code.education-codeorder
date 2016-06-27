@@ -1,20 +1,19 @@
 <?php
-namespace CodeOrders\V1\Rest\Users;
+namespace CodeOrders\V1\Rest\Products;
 
 use Zend\Db\TableGateway\TableGateway;
-use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Paginator\Adapter\DbTableGateway;
 
-class UsersRepository
+class ProductsRepository
 {
     /**
-     * @var TableGatewayInterface
+     * @var TableGateway
      */
     private $tableGateway;
 
     /**
-     * UsersRepository constructor.
-     * @param TableGateway|TableGatewayInterface $tableGateway
+     * ProductsRepository constructor.
+     * @param TableGateway $tableGateway
      */
     public function __construct(TableGateway $tableGateway)
     {
@@ -25,16 +24,7 @@ class UsersRepository
     {
         $tableGateway = $this->tableGateway;
         $paginatorAdapter = new DbTableGateway($tableGateway);
-        return new UsersCollection($paginatorAdapter);
-    }
-
-    public function insert(UsersMapper $usersMapper)
-    {
-        if ($this->tableGateway->insert($usersMapper->extract($usersMapper)) <= 0) {
-            return false;
-        }
-        $usersMapper->setId($this->tableGateway->getLastInsertValue());
-        return $usersMapper;
+        return new ProductsCollection($paginatorAdapter);
     }
 
     public function find($id)
@@ -46,12 +36,21 @@ class UsersRepository
         return $resultSet->current();
     }
 
-    public function update($id, UsersMapper $usersMapper)
+    public function insert(ProductsMapper $productsMapper)
     {
-        if ($this->tableGateway->update($usersMapper->extract($usersMapper), ['id' => $id]) <= 0) {
+        if ($this->tableGateway->insert($productsMapper->extract($productsMapper)) <= 0) {
             return false;
         }
-        return $usersMapper;
+        $productsMapper->setId($this->tableGateway->getLastInsertValue());
+        return $productsMapper;
+    }
+
+    public function update($id, ProductsMapper $productsMapper)
+    {
+        if ($this->tableGateway->update($productsMapper->extract($productsMapper), ['id' => $id]) <= 0) {
+            return false;
+        }
+        return $productsMapper;
     }
 
     public function delete($id)

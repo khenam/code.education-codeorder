@@ -1,5 +1,5 @@
 <?php
-namespace CodeOrders\V1\Rest\Users;
+namespace CodeOrders\V1\Rest\Products;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -7,7 +7,7 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UsersRepositoryFactory implements FactoryInterface
+class ProductsRepositoryFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -19,9 +19,9 @@ class UsersRepositoryFactory implements FactoryInterface
     {
         /** @var Adapter $adapter */
         $adapter = $serviceLocator->get('DbAdapter');
-        $userMapper = new UsersMapper();
-        $hydrator = new HydratingResultSet($userMapper, new UsersEntity());
-        $tableGateway = new TableGateway('oauth_users',$adapter,null,$hydrator);
-        return new UsersRepository($tableGateway);
+        $productsMapper = new ProductsMapper();
+        $hydrator = new HydratingResultSet($productsMapper, new ProductsEntity());
+        $tableGateway = new TableGateway('products',$adapter,null,$hydrator);
+        return new ProductsRepository($tableGateway);
     }
 }
